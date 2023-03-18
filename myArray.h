@@ -104,7 +104,7 @@ class myArray {
 			}
 			return *this;
 		}
-		T& operator[](int idx){ // index operator
+		T& operator[](int idx) const{ // index operator
 			return _data[idx];
 		}
 		int size() const{
