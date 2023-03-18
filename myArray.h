@@ -46,7 +46,7 @@ class myArray {
 				}
 				reverse_iterator operator++(int){
 					reverse_iterator tmp = *this;
-					++(*this);
+					--(*this);
 					return tmp;
 				}
 				bool operator==(const reverse_iterator& other) const{
@@ -105,10 +105,10 @@ class myArray {
 			return iterator(_data+_size);
 		}
 		reverse_iterator rbegin(){
-			return reverse_iterator(_data);
+			return reverse_iterator(_data+_size-1);
 		}
 		reverse_iterator rend(){
-			return reverse_iterator(_data+_size);
+			return reverse_iterator(_data-1);
 		}
 		~myArray(){
 			delete[] _data;
