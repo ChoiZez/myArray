@@ -7,7 +7,17 @@ template<typename T>
 class myArray {
 	private:
 		int _size;
+		int _capacity;
 		T* _data;
+		void resize(int new_capacity){
+			T* new_data = new T[new_capacity];
+			for (int i = 0; i < _size; ++i){
+				new_data[i] = std::move(_data[i]);
+			}
+			delete _data;
+			_data = new_data;
+			_capacity = new_capacity;
+		}
 	public:
 		class iterator{
 			private:
@@ -59,23 +69,23 @@ class myArray {
 					return *_ptr;
 				}
 		};
-		myArray(int size) : _size(size), _data(new T[_size]){};
-		myArray(const myArray& other) : _size(other._size), _data(new T[_size]){ // copy constructor
-			std::cout << "Copy";
+		myArray(int capacity = 1) : _size(0), _capacity(capacity), _data(new T[_capacity]){};
+		myArray(const myArray& other) : _size(other._size), _capacity(other._capacity), _data(new T[other._capacity]){ // copy constructor
 			for (int i = 0; i < _size; ++i){
 				_data[i] = other._data[i];
 			}
 		}
-		myArray(myArray&& other) noexcept : _size(other._size), _data(other._data){ // move constructor
-			std::cout << "Move";
+		myArray(myArray&& other) noexcept : _size(other._size), _capacity(other._capacity), _data(other._data){ // move constructor
 			other._size = 0;
+			other._capacity = 0;
 			other._data = nullptr;
 		}
 		myArray& operator=(const myArray& other){ // copy assignment
 			if (this != &other){
 				delete[] _data;
 				_size = other._size;
-				_data = new T[_size];
+				_capacity = other._capacity;
+				_data = new T[_capacity];
 				for (int i = 0; i < _size; ++i){
 					_data[i] = other._data[i];
 				}
@@ -86,8 +96,10 @@ class myArray {
 			if (this != &other){
 				delete[] _data;
 				_size = other._size;
+				_capacity = other._capacity;
 				_data = other._data;
 				other._size = 0;
+				other._capacity = 0;
 				other._data = nullptr;
 			}
 			return *this;
@@ -97,6 +109,16 @@ class myArray {
 		}
 		int size() const{
 			return _size;
+		}
+		int capacity() const{
+			return _capacity;
+		}
+		void push_back(const T value){
+			if (_size == _capacity){
+				resize(2*_capacity);
+			}
+			_data[_size] = value;
+			++_size;
 		}
 		iterator begin(){
 			return iterator(_data);
