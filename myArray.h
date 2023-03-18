@@ -132,6 +132,17 @@ class myArray {
 		reverse_iterator rend(){
 			return reverse_iterator(_data-1);
 		}
+		bool operator==(const myArray& other){
+			if (_size != other._size){
+				return false;
+			}
+			for (int i = 0; i < _size; ++i){
+				if (_data[i] != other.data[i]){
+					return false;
+				}
+			}
+			return true;
+		}
 		~myArray(){
 			delete[] _data;
 		};
