@@ -137,7 +137,7 @@ class myArray {
 				return false;
 			}
 			for (int i = 0; i < _size; ++i){
-				if (_data[i] != other.data[i]){
+				if (_data[i] != other._data[i]){
 					return false;
 				}
 			}
