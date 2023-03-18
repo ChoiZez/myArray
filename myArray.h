@@ -132,7 +132,7 @@ class myArray {
 		reverse_iterator rend(){
 			return reverse_iterator(_data-1);
 		}
-		bool operator==(const myArray& other){
+		bool operator==(const myArray& other) const{
 			if (_size != other._size){
 				return false;
 			}
