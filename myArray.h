@@ -96,7 +96,6 @@ class myArray {
 			return *this;
 		}
 		T& operator[](int idx) const{ // index operator
-            if (idx > _size) throw std::bad_alloc();
 			return _data[idx];
 		}
 		int size() const{
@@ -154,8 +153,8 @@ class myArray {
 			--_size;
 		}
 		void trim(){
-			for (auto it = rbegin(); it != rend(); ++it){
-				if (*it == 0){
+			for (int i = _size - 1; i >= 1; --i){
+				if (_data[i] == 0){
 					--_size;
 				} else {
 					break;
