@@ -154,7 +154,7 @@ class myArray {
 			--_size;
 		}
 		void trim(){
-			for (auto it = rbegin(); it != rend(); it++){
+			for (auto it = rbegin(); it != rend(); ++it){
 				if (*it == 0){
 					--_size;
 				} else {
