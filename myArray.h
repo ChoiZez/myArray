@@ -54,7 +54,7 @@ class myArray {
 					return _ptr == other._ptr;
 				}
 				bool operator!=(const reverse_iterator& other) const{
-					return *this != other;
+					return _ptr != other._ptr;
 				}
 				T& operator*() {
 					return *_ptr;
@@ -96,6 +96,7 @@ class myArray {
 			return *this;
 		}
 		T& operator[](int idx) const{ // index operator
+            if (idx > _size) throw std::bad_alloc();
 			return _data[idx];
 		}
 		int size() const{
@@ -150,7 +151,6 @@ class myArray {
 		}
 		void pop_back(){
 			auto it = rbegin();
-			delete it;
 			--_size;
 		}
 		void trim(){
