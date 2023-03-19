@@ -9,15 +9,6 @@ class myArray {
 		int _size;
 		int _capacity;
 		T* _data;
-		void resize(int new_capacity){
-			T* new_data = new T[new_capacity];
-			for (int i = 0; i < _size; ++i){
-				new_data[i] = std::move(_data[i]);
-			}
-			delete _data;
-			_data = new_data;
-			_capacity = new_capacity;
-		}
 	public:
 		class iterator{
 			private:
@@ -142,6 +133,15 @@ class myArray {
 				}
 			}
 			return true;
+		}
+		void resize(int new_capacity){
+			T* new_data = new T[new_capacity];
+			for (int i = 0; i < _size; ++i){
+				new_data[i] = std::move(_data[i]);
+			}
+			delete _data;
+			_data = new_data;
+			_capacity = new_capacity;
 		}
 		~myArray(){
 			delete[] _data;
