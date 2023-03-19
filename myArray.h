@@ -143,6 +143,25 @@ class myArray {
 			_data = new_data;
 			_capacity = new_capacity;
 		}
+		void clear(){
+			delete[] _data;
+			_size = 0;
+			_capacity = 1;
+		}
+		void pop_back(){
+			auto it = rbegin();
+			delete it;
+			--_size;
+		}
+		void trim(){
+			for (auto it = rbegin(); it != rend(); it++){
+				if (*it == 0){
+					--_size;
+				} else {
+					break;
+				}
+			}
+		}
 		~myArray(){
 			delete[] _data;
 		};
