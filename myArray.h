@@ -14,7 +14,7 @@ class myArray {
 			private:
 				T* _ptr;
 			public:
-				iterator(T* ptr) : _ptr(ptr) {}
+				explicit iterator(T* ptr) : _ptr(ptr) {}
 				iterator(const iterator& it) : _ptr(it._ptr) {}
 				iterator& operator++(){
 					_ptr++;
@@ -39,7 +39,7 @@ class myArray {
 			private:
 				T* _ptr;
 			public:
-				reverse_iterator(T* ptr) : _ptr(ptr) {}
+				explicit reverse_iterator(T* ptr) : _ptr(ptr) {}
 				reverse_iterator(const reverse_iterator& rit) : _ptr(rit._ptr) {}
 				reverse_iterator& operator++(){
 					_ptr--;
@@ -60,7 +60,7 @@ class myArray {
 					return *_ptr;
 				}
 		};
-		myArray(int capacity = 1) : _size(0), _capacity(capacity), _data(new T[_capacity]){};
+		explicit myArray(int capacity = 1) : _size(0), _capacity(capacity), _data(new T[_capacity]){};
 		myArray(const myArray& other) : _size(other._size), _capacity(other._capacity), _data(new T[other._capacity]){ // copy constructor
 			for (int i = 0; i < _size; ++i){
 				_data[i] = other._data[i];
@@ -96,6 +96,9 @@ class myArray {
 			return *this;
 		}
 		T& operator[](int idx) const{ // index operator
+            if (idx >= _capacity){
+                throw std::bad_alloc();
+            }
 			return _data[idx];
 		}
 		int size() const{
@@ -144,12 +147,10 @@ class myArray {
 			_capacity = new_capacity;
 		}
 		void clear(){
-			delete[] _data;
 			_size = 0;
 			_capacity = 1;
 		}
 		void pop_back(){
-			auto it = rbegin();
 			--_size;
 		}
 		void trim(){
