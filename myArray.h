@@ -109,7 +109,7 @@ class myArray {
 		}
 		void push_back(const T value){
 			if (_size == _capacity){
-				resize(2*_capacity);
+				resize(std::max(2 * _capacity, 1));
 			}
 			_data[_size] = value;
 			++_size;
