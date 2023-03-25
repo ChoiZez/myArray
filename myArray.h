@@ -163,6 +163,11 @@ class myArray {
 				}
 			}
 		}
+		void reverse(){
+			for (int i = 0; i < _size/2; ++i){
+				std::swap(_data[i],_data[_size-i]);
+			}
+		}
 		~myArray(){
 			delete[] _data;
 		};
