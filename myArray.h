@@ -143,7 +143,7 @@ class myArray {
 			for (int i = 0; i < _size; ++i){
 				new_data[i] = std::move(_data[i]);
 			}
-			delete _data;
+			delete[] _data;
 			_data = new_data;
 			_capacity = new_capacity;
 		}
