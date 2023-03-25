@@ -1,7 +1,7 @@
 #ifndef MYARRAY_H
 #define MYARRAY_H
 
-#include <iostream>
+#include <stdexcept>
 
 template<typename T>
 class myArray {
