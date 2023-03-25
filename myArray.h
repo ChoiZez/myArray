@@ -139,6 +139,7 @@ class myArray {
 		}
 		void resize(int new_capacity){
 			T* new_data = new T[new_capacity];
+			_size = _size > new_capacity ? new_capacity : _size;
 			for (int i = 0; i < _size; ++i){
 				new_data[i] = std::move(_data[i]);
 			}
