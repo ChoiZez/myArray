@@ -1,7 +1,7 @@
 #ifndef MYARRAY_H
 #define MYARRAY_H
 
-#include <iostream>
+#include <stdexcept>
 
 template<typename T>
 class myArray {
@@ -14,7 +14,7 @@ class myArray {
 			private:
 				T* _ptr;
 			public:
-				iterator(T* ptr) : _ptr(ptr) {}
+				explicit iterator(T* ptr) : _ptr(ptr) {}
 				iterator(const iterator& it) : _ptr(it._ptr) {}
 				iterator& operator++(){
 					_ptr++;
@@ -39,7 +39,7 @@ class myArray {
 			private:
 				T* _ptr;
 			public:
-				reverse_iterator(T* ptr) : _ptr(ptr) {}
+				explicit reverse_iterator(T* ptr) : _ptr(ptr) {}
 				reverse_iterator(const reverse_iterator& rit) : _ptr(rit._ptr) {}
 				reverse_iterator& operator++(){
 					_ptr--;
@@ -60,7 +60,7 @@ class myArray {
 					return *_ptr;
 				}
 		};
-		myArray(int capacity = 1) : _size(0), _capacity(capacity), _data(new T[_capacity]){};
+		explicit myArray(int capacity = 1) : _size(0), _capacity(capacity), _data(new T[_capacity]){};
 		myArray(const myArray& other) : _size(other._size), _capacity(other._capacity), _data(new T[other._capacity]){ // copy constructor
 			for (int i = 0; i < _size; ++i){
 				_data[i] = other._data[i];
@@ -71,9 +71,9 @@ class myArray {
 			other._capacity = 0;
 			other._data = nullptr;
 		}
-    ~myArray(){
-      delete[] _data;
-    };
+        ~myArray(){
+          delete[] _data;
+        };
 		myArray& operator=(const myArray& other){ // copy assignment
 			if (this != &other){
 				delete[] _data;
@@ -99,6 +99,9 @@ class myArray {
 			return *this;
 		}
 		T& operator[](int idx) const{ // index operator
+            if (idx >= _capacity){
+                throw std::bad_alloc();
+            }
 			return _data[idx];
 		}
 		int size() const{
@@ -109,7 +112,7 @@ class myArray {
 		}
 		void push_back(const T value){
 			if (_size == _capacity){
-				resize(2*_capacity);
+				resize(std::max(2 * _capacity, 1));
 			}
 			_data[_size] = value;
 			++_size;
@@ -139,10 +142,11 @@ class myArray {
 		}
 		void resize(int new_capacity){
 			T* new_data = new T[new_capacity];
+			_size = _size > new_capacity ? new_capacity : _size;
 			for (int i = 0; i < _size; ++i){
 				new_data[i] = std::move(_data[i]);
 			}
-			delete _data;
+			delete[] _data;
 			_data = new_data;
 			_capacity = new_capacity;
 		}
@@ -152,6 +156,11 @@ class myArray {
 		}
 		void pop_back(){
 			--_size;
+		}
+		void reverse(){
+			for (int i = 0; i < _size/2; ++i){
+				std::swap(_data[i],_data[_size-i-1]);
+			}
 		}
 };
 
