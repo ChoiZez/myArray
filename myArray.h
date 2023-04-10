@@ -71,6 +71,9 @@ class myArray {
 			other._capacity = 0;
 			other._data = nullptr;
 		}
+    ~myArray(){
+      delete[] _data;
+    };
 		myArray& operator=(const myArray& other){ // copy assignment
 			if (this != &other){
 				delete[] _data;
@@ -144,26 +147,12 @@ class myArray {
 			_capacity = new_capacity;
 		}
 		void clear(){
-			delete[] _data;
 			_size = 0;
 			_capacity = 1;
 		}
 		void pop_back(){
-			auto it = rbegin();
 			--_size;
 		}
-		void trim(){
-			for (int i = _size - 1; i >= 1; --i){
-				if (_data[i] == 0){
-					--_size;
-				} else {
-					break;
-				}
-			}
-		}
-		~myArray(){
-			delete[] _data;
-		};
 };
 
 #endif
