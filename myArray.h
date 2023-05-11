@@ -2,12 +2,13 @@
 #define MYARRAY_H
 
 #include <stdexcept>
+#include <initializer_list>
 
 template<typename T>
 class myArray {
 	private:
-		int _size;
-		int _capacity;
+		size_t _size;
+		size_t _capacity;
 		T* _data;
 	public:
 		class iterator{
@@ -61,8 +62,16 @@ class myArray {
 				}
 		};
 		explicit myArray(int capacity = 1) : _size(0), _capacity(capacity), _data(new T[_capacity]){};
+
+                myArray(std::initializer_list<T> il) : _size (il.size()), _capacity(_size), _data(new T[_size]) {
+                                iterator pointer = begin();
+                                for (const T& i : il){
+                                        *pointer++ = i;
+                                }
+                }
+
 		myArray(const myArray& other) : _size(other._size), _capacity(other._capacity), _data(new T[other._capacity]){ // copy constructor
-			for (int i = 0; i < _size; ++i){
+			for (int i = 0; i < _capacity; ++i){
 				_data[i] = other._data[i];
 			}
 		}
@@ -80,7 +89,7 @@ class myArray {
 				_size = other._size;
 				_capacity = other._capacity;
 				_data = new T[_capacity];
-				for (int i = 0; i < _size; ++i){
+				for (int i = 0; i < _capacity; ++i){
 					_data[i] = other._data[i];
 				}
 			}
@@ -98,21 +107,21 @@ class myArray {
 			}
 			return *this;
 		}
-		T& operator[](int idx) const{ // index operator
-            if (idx >= _capacity){
-                throw std::bad_alloc();
-            }
+		T& operator[](size_t idx) const{ // index operator
+                        if (idx >= _capacity){
+                            throw std::out_of_range("Out of range");
+                        }
 			return _data[idx];
 		}
-		int size() const{
+		size_t size() const{
 			return _size;
 		}
-		int capacity() const{
+		size_t capacity() const{
 			return _capacity;
 		}
-		void push_back(const T value){
+		void push_back(T value){
 			if (_size == _capacity){
-				resize(std::max(2 * _capacity, 1));
+				resize(std::max(2 * _capacity, 1ULL));
 			}
 			_data[_size] = value;
 			++_size;
@@ -162,6 +171,15 @@ class myArray {
 				std::swap(_data[i],_data[_size-i-1]);
 			}
 		}
+
+                int find(T value){
+                        for (int i = 0; i < _size; ++i){
+                                if (_data[i] == value){
+                                        return i;
+                                }
+                        }
+                        return -1;
+                }
 };
 
 #endif
